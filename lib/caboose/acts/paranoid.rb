@@ -190,7 +190,7 @@ module Caboose #:nodoc:
         end
 
         def recover!
-          self.deleted_at = nil
+          self.send("#{deleted_attribute}=".to_sym, nil)
           save!
         end
         
