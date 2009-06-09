@@ -186,7 +186,7 @@ module Caboose #:nodoc:
         end
 
         def deleted?
-          !!read_attribute(:deleted_at)
+          !!read_attribute(deleted_attribute.to_sym)
         end
 
         def recover!
