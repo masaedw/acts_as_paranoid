@@ -55,7 +55,9 @@ module Caboose #:nodoc:
         def acts_as_paranoid(options = {})
           unless paranoid? # don't let AR call this twice
             cattr_accessor :deleted_attribute
+            cattr_accessor :null_date
             self.deleted_attribute = options[:with] || :deleted_at
+            self.null_date = options[:null_date] || nil
             alias_method :destroy_without_callbacks!, :destroy_without_callbacks
             class << self
               alias_method :find_every_with_deleted,    :find_every
@@ -186,11 +188,11 @@ module Caboose #:nodoc:
         end
 
         def deleted?
-          !!read_attribute(deleted_attribute.to_sym)
+          read_attribute(deleted_attribute.to_sym) != null_date
         end
 
         def recover!
-          self.send("#{deleted_attribute}=".to_sym, nil)
+          self.send("#{deleted_attribute}=".to_sym, null_date)
           save!
         end
         

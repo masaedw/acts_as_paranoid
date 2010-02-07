@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class Widget < ActiveRecord::Base
-  acts_as_paranoid
+  acts_as_paranoid :null_date => Time.zone.parse("9999-12-31")
   has_many :categories, :dependent => :destroy
   has_and_belongs_to_many :habtm_categories, :class_name => 'Category'
   has_one :category
